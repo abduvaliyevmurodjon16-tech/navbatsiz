@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="NAVBATSIZ — davlat xizmatlari, qabulga tayyorgarlik va xizmatlar statistikasi."
+    />
+    <title>NAVBATSIZ — Davlat xizmatlari</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="NAVBATSIZ bosh sahifasi" data-home>
+        <span class="brand-mark" aria-hidden="true">N</span>
+        <span>NAVBATSIZ</span>
+      </a>
+      <nav class="main-nav" aria-label="Asosiy bo‘limlar">
+        <button class="nav-link active" type="button" data-view="catalog-view">Xizmatlar</button>
+        <button class="nav-link" type="button" data-view="admin-view">Administrator paneli</button>
+      </nav>
+      <span class="header-note">Davlat xizmatlari yagona katalogi</span>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-content">
+          <span class="eyebrow">DAVLAT XIZMATLARI — BIR JOYDA</span>
+          <h1 id="page-title">NAVBATSIZ</h1>
+          <p>
+            Kerakli xizmatni toping, borishdan oldin tayyorlaning va tashkilot
+            haqidagi ma’lumotlarni bir joydan ko‘ring.
+          </p>
+          <label class="search-box" for="service-search">
+            <span class="search-icon" aria-hidden="true"></span>
+            <input
+              id="service-search"
+              type="search"
+              placeholder="Xizmat nomini yozing..."
+              autocomplete="off"
+            />
+            <kbd>/</kbd>
+          </label>
+          <span class="search-hint">Masalan: ID-karta, pensiya yoki kadastr</span>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-orbit orbit-one"></div>
+          <div class="art-orbit orbit-two"></div>
+          <div class="art-card">
+            <span class="art-card-icon">✓</span>
+            <span class="art-line line-long"></span>
+            <span class="art-line line-short"></span>
+            <span class="art-pill"></span>
+          </div>
+          <span class="art-dot dot-one"></span>
+          <span class="art-dot dot-two"></span>
+        </div>
+      </section>
+
+      <section class="view-section" id="catalog-view">
+        <div class="catalog">
+          <div class="catalog-heading">
+            <div>
+              <span class="section-kicker">YAGONA KATALOG</span>
+              <h2>Xizmatlarni ko‘rib chiqing</h2>
+            </div>
+            <span class="result-count" id="result-count" aria-live="polite"></span>
+          </div>
+          <nav
+            class="category-list"
+            id="category-list"
+            aria-label="Xizmat kategoriyalari"
+          ></nav>
+          <div class="service-grid" id="service-grid"></div>
+          <div class="empty-state" id="empty-state" hidden>
+            <span class="empty-icon" aria-hidden="true">⌕</span>
+            <h3>Xizmat topilmadi</h3>
+            <p>Qidiruv so‘zini o‘zgartiring yoki boshqa kategoriyani tanlang.</p>
+          </div>
+          <aside class="source-note">
+            <span class="note-icon" aria-hidden="true">i</span>
+            <p>
+              Ro‘yxat boshlang‘ich katalogdir. Rasmiy nomlar, hujjatlar, narxlar,
+              tashkilotlar va havolalarni tegishli davlat manbalaridan tekshirish
+              lozim. Tasdiqlanmagan ma’lumotlar kiritilmagan.
+            </p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view-section" id="admin-view" hidden>
+        <div class="admin-page">
+          <div class="catalog-heading admin-heading">
+            <div>
+              <span class="section-kicker">BOSHQARUV VA HISOBOT</span>
+              <h2>Administrator paneli</h2>
+              <p class="admin-subtitle">
+                Xizmatlar, tashrif va fikrlar statistikasi
+              </p>
+            </div>
+            <span class="demo-badge">Mahalliy demo</span>
+          </div>
+          <div class="demo-warning" role="note">
+            Demo ma’lumotlar faqat ushbu brauzerda saqlanadi. Administrator
+            akkauntlari, rollar va umumiy ma’lumotlar bazasi uchun server
+            hamda xavfsiz kirish tizimi kerak.
+          </div>
+
+          <div class="stats-grid" id="stats-grid" aria-live="polite"></div>
+
+          <div class="admin-columns">
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="section-kicker">KATALOG</span>
+                  <h3>Xizmatlarni boshqarish</h3>
+                </div>
+              </div>
+              <form id="service-form" class="admin-form">
+                <input id="service-id" type="hidden" />
+                <div class="form-row">
+                  <label>
+                    Xizmat nomi
+                    <input id="admin-service-name" name="name" required maxlength="140" />
+                  </label>
+                  <label>
+                    Kategoriya
+                    <select id="admin-service-category" name="category" required></select>
+                  </label>
+                </div>
+                <label>
+                  Xizmat tavsifi
+                  <textarea id="admin-description" name="description" rows="2"></textarea>
+                </label>
+                <label>
+                  Kerakli hujjatlar
+                  <textarea id="admin-documents" name="documents" rows="2"></textarea>
+                </label>
+                <div class="form-row">
+                  <label>
+                    Tashkilot nomi
+                    <input id="admin-organization" name="organization" />
+                  </label>
+                  <label>
+                    Telefon raqami
+                    <input id="admin-phone" name="phone" type="tel" />
+                  </label>
+                </div>
+                <label>
+                  Tashkilot manzili
+                  <input id="admin-address" name="address" />
+                </label>
+                <div class="form-row">
+                  <label>
+                    Xarita havolasi yoki koordinatalar
+                    <input id="admin-map" name="map" type="text" />
+                  </label>
+                  <label>
+                    Rasmiy yozilish havolasi
+                    <input id="admin-booking" name="bookingUrl" type="url" />
+                  </label>
+                </div>
+                <div class="form-row form-row-three">
+                  <label>
+                    Ish kunlari
+                    <input id="admin-days" name="days" />
+                  </label>
+                  <label>
+                    Ish vaqti
+                    <input id="admin-hours" name="hours" />
+                  </label>
+                  <label>
+                    Narxi / davlat boji
+                    <input id="admin-price" name="price" />
+                  </label>
+                </div>
+                <div class="form-row">
+                  <label>
+                    Taxminiy kutish vaqti
+                    <input id="admin-wait" name="estimatedWait" />
+                  </label>
+                  <label>
+                    Murojaat qilish tartibi
+                    <input id="admin-instructions" name="instructions" />
+                  </label>
+                </div>
+                <div class="form-row">
+                  <label>
+                    Ma’lumot manbasi (URL)
+                    <input id="admin-source" name="source" type="url" />
+                  </label>
+                  <label>
+                    Oxirgi yangilangan sana
+                    <input id="admin-updated" name="updatedAt" type="date" />
+                  </label>
+                </div>
+                <div class="form-actions">
+                  <button class="button button-primary" type="submit" id="save-service">
+                    Xizmatni saqlash
+                  </button>
+                  <button class="button button-secondary" type="button" id="cancel-edit" hidden>
+                    Tahrirlashni bekor qilish
+                  </button>
+                </div>
+              </form>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Xizmat</th>
+                      <th>Kategoriya</th>
+                      <th>Manba</th>
+                      <th>Amallar</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-service-list"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="section-kicker">TASHRIF</span>
+                  <h3>Kutish vaqtini qayd etish</h3>
+                </div>
+              </div>
+              <form id="wait-form" class="admin-form">
+                <label>
+                  Xizmat
+                  <select id="wait-service" required></select>
+                </label>
+                <div class="form-row">
+                  <label>
+                    Fuqaro kelgan vaqt
+                    <input id="arrival-time" type="datetime-local" required />
+                  </label>
+                  <label>
+                    Xizmat ko‘rsatilgan vaqt
+                    <input id="served-time" type="datetime-local" required />
+                  </label>
+                </div>
+                <button class="button button-primary" type="submit">Tashrifni saqlash</button>
+              </form>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Xizmat</th>
+                      <th>Kelgan vaqt</th>
+                      <th>Kutish</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="wait-list"></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+
+          <section class="panel history-panel">
+            <div class="panel-heading">
+              <div>
+                <span class="section-kicker">AUDIT</span>
+                <h3>Ma’lumotlar o‘zgarishi tarixi</h3>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Sana va vaqt</th>
+                    <th>Amal</th>
+                    <th>Ma’lumot</th>
+                  </tr>
+                </thead>
+                <tbody id="audit-list"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel report-panel">
+            <div class="panel-heading">
+              <div>
+                <span class="section-kicker">TAHLIL</span>
+                <h3>Xizmatlar bo‘yicha hisobot</h3>
+              </div>
+            </div>
+            <div class="report-grid">
+              <div>
+                <h4>Eng ko‘p ko‘rilgan xizmatlar</h4>
+                <div id="popular-services" class="bar-list"></div>
+              </div>
+              <div>
+                <h4>O‘rtacha kutish vaqti</h4>
+                <div id="wait-report" class="bar-list"></div>
+              </div>
+            </div>
+            <div class="feedback-admin">
+              <h4>Foydalanuvchi fikrlari</h4>
+              <div id="feedback-list" class="feedback-list"></div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <aside class="assistant-widget" aria-label="NAVBATSIZ yordamchisi">
+      <section class="assistant-panel" id="assistant-panel" aria-labelledby="assistant-title" hidden>
+        <header class="assistant-header">
+          <div class="assistant-avatar" aria-hidden="true">N</div>
+          <div>
+            <h2 id="assistant-title">NAVBATSIZ yordamchi</h2>
+            <span>Qaysi masalada yordam kerak?</span>
+          </div>
+          <button
+            class="assistant-close"
+            id="assistant-close"
+            type="button"
+            aria-label="Yordamchini yopish"
+          >
+            &times;
+          </button>
+        </header>
+        <div class="assistant-demo-note">
+          Hozircha bu katalog bo‘yicha ishlaydigan demo yo‘naltiruvchi; AI
+          provayderiga ulanmagan. Shaxsiy hujjat raqami yoki SMS-kodni yozmang.
+        </div>
+        <div
+          class="assistant-messages"
+          id="assistant-messages"
+          role="log"
+          aria-live="polite"
+          aria-relevant="additions"
+        ></div>
+        <div class="assistant-examples" id="assistant-examples">
+          <button type="button" data-prompt="Yashash joyimda kimlar ro‘yxatdan o‘tganini bilmoqchiman">
+            Manzilimdagi ro‘yxat
+          </button>
+          <button type="button" data-prompt="Elektr ta’minoti bo‘yicha shikoyat qilmoqchiman">
+            Elektr bo‘yicha shikoyat
+          </button>
+          <button type="button" data-prompt="Pensiya olish uchun ariza bermoqchiman">
+            Pensiya arizasi
+          </button>
+        </div>
+        <form class="assistant-form" id="assistant-form">
+          <label class="visually-hidden" for="assistant-input">Savolingiz yoki murojaat mavzusi</label>
+          <textarea
+            id="assistant-input"
+            rows="2"
+            maxlength="500"
+            placeholder="Masalan: manzilimda kimlar ro‘yxatda ekanini bilmoqchiman..."
+            required
+          ></textarea>
+          <button class="assistant-send" type="submit" aria-label="Yuborish">↑</button>
+        </form>
+      </section>
+      <button
+        class="assistant-launcher"
+        id="assistant-launcher"
+        type="button"
+        aria-expanded="false"
+        aria-controls="assistant-panel"
+      >
+        <span aria-hidden="true">✦</span>
+        <span>Yordamchi</span>
+      </button>
+    </aside>
+
+    <footer class="site-footer">
+      <span class="footer-brand">NAVBATSIZ</span>
+      <span>Rasmiy ma’lumotlar tegishli tashkilotlar tomonidan tasdiqlanishi lozim.</span>
+    </footer>
+
+    <dialog class="service-dialog" id="service-dialog" aria-labelledby="dialog-title">
+      <div class="dialog-top">
+        <span class="dialog-category" id="dialog-category"></span>
+        <button class="close-button" id="dialog-close" type="button" aria-label="Yopish">
+          &times;
+        </button>
+      </div>
+      <h2 id="dialog-title"></h2>
+      <p class="dialog-description" id="dialog-description"></p>
+      <div class="detail-grid" id="detail-grid"></div>
+      <div class="appointment-box">
+        <h3>Qabulga tayyorgarlik</h3>
+        <p id="appointment-instructions"></p>
+        <ul id="preparation-list"></ul>
+        <a class="button button-primary booking-link" id="booking-link" hidden
+          >Rasmiy yozilish sahifasiga o‘tish ↗</a
+        >
+        <a class="text-link" id="map-link" target="_blank" rel="noopener noreferrer" hidden
+          >Xaritada ko‘rish ↗</a
+        >
+      </div>
+      <section class="feedback-box">
+        <h3>Xizmat sifatini baholang</h3>
+        <form id="feedback-form" class="feedback-form">
+          <label>
+            Baho
+            <select id="feedback-rating" required>
+              <option value="">Tanlang</option>
+              <option value="5">5 — A’lo</option>
+              <option value="4">4 — Yaxshi</option>
+              <option value="3">3 — Qoniqarli</option>
+              <option value="2">2 — Yomon</option>
+              <option value="1">1 — Juda yomon</option>
+            </select>
+          </label>
+          <label>
+            Izoh (ixtiyoriy)
+            <textarea id="feedback-comment" rows="2" maxlength="500"></textarea>
+          </label>
+          <button class="button button-primary" type="submit">Fikrni yuborish</button>
+          <span id="feedback-status" class="form-status" aria-live="polite"></span>
+        </form>
+      </section>
+    </dialog>
+  </body>
+</html>
