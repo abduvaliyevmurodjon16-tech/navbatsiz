@@ -1370,6 +1370,10 @@ input {
     align-items: flex-start;
   }
 
+  .catalog-heading > div {
+    min-width: 0;
+  }
+
   .result-count {
     padding-top: 20px;
     font-size: 10px;
@@ -1443,7 +1447,9 @@ input {
   .assistant-panel {
     width: min(420px, calc(100vw - 28px));
     height: min(620px, calc(100vh - 92px));
-    min-height: 360px;
+    height: min(620px, calc(100dvh - 92px));
+    min-height: min(280px, calc(100vh - 92px));
+    min-height: min(280px, calc(100dvh - 92px));
   }
 
   .assistant-launcher {
@@ -1453,6 +1459,31 @@ input {
 
   .service-dialog h2 {
     font-size: 20px;
+  }
+}
+
+@media (max-width: 380px) {
+  .catalog h2 {
+    font-size: 19px;
+  }
+
+  .result-count {
+    max-width: 92px;
+    white-space: normal;
+    text-align: right;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .assistant-widget {
+    right: max(10px, env(safe-area-inset-right));
+    bottom: max(10px, env(safe-area-inset-bottom));
+  }
+
+  .assistant-panel {
+    width: min(420px, calc(100vw - 20px));
   }
 }
 
